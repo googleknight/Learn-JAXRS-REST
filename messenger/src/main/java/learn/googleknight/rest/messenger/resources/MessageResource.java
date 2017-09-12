@@ -2,6 +2,7 @@ package learn.googleknight.rest.messenger.resources;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,16 +26,14 @@ public class MessageResource {
 	// dependencies
 
 	@GET // To map HTTP GET method to this particular method
-	public List<Message> getMessages(@QueryParam("year") int year,
-									@QueryParam("start") int start,
-									@QueryParam("size") int size
+	public List<Message> getMessages(@BeanParam MessageFilterBean filterbean
 									) {  // For getting query parameter if exists
-		if(year>0) {
-			return messageservice.getAllMessagesForYear(year);
+		if(filterbean.getYear()>0) {
+			return messageservice.getAllMessagesForYear(filterbean.getYear());
 		}
-		if(start>0 &&size>0)
+		if(filterbean.getStart()>0 && filterbean.getSize()>0)
 		{
-			return messageservice.getAllMessagesPaginated(start, size);
+			return messageservice.getAllMessagesPaginated(filterbean.getStart(), filterbean.getSize());
 		}
 		return messageservice.getAllMessages();
 	}
